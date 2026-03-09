@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: balamkr/expensy-backend:latest 
+        image: blamkr/expensy-backend:latest 
         ports: [{ containerPort: 8706 }]
         envFrom: [{ configMapRef: { name: expensy-config } }]
         env:
@@ -42,7 +42,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: balamkr/expensy-frontend:latest 
+        image: blamkr/expensy-frontend:latest 
         ports: [{ containerPort: 3000 }]
         envFrom: [{ configMapRef: { name: expensy-config } }]
 ---
