@@ -2,26 +2,32 @@ provider "azurerm" {
   features {}
 }
 
+# Your resource group (already imported)
 resource "azurerm_resource_group" "rg" {
   name     = "taco-rg"
   location = "germanywestcentral"
 }
 
-# Azure Kubernetes Service (AKS) Cluster
-resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "taco-aks"
-  location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name
-  dns_prefix          = "tacoaks"
-
-  default_node_pool {
-    name       = "default"
-    node_count = 2
-    vm_size    = "Standard_B2s" # Free-tier friendly
-  }
-
-  identity {
-    type = "SystemAssigned"
-  }
+# Reference the shared Ironhack AKS cluster (read-only, no creation)
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = "dv-ft-main-cluster"
+  resource_group_name = "diogos-_group"
 }
 
+# Output the cluster details for reference
+output "cluster_name" {
+  value = data.azurerm_kubernetes_cluster.aks.name
+}
+
+output "cluster_location" {
+  value = data.azurerm_kubernetes_cluster.aks.location
+}
+
+output "kube_config" {
+  value     = data.azurerm_kubernetes_cluster.aks.kube_config_raw
+  sensitive = true
+}
+
+output "cluster_fqdn" {
+  value = data.azurerm_kubernetes_cluster.aks.fqdn
+}
