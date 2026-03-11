@@ -5,13 +5,16 @@ metadata:
   namespace: taco-expensy
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - "*" 
+      secretName: expensy-tls-secret
   rules:
-    - http:
+    - http: 
         paths:
-          # (Backend/API)
           - path: /taco(/|$)(api.*)
             pathType: ImplementationSpecific
             backend:
@@ -19,8 +22,6 @@ spec:
                 name: backend-service
                 port:
                   number: 80
-                  
-          # (Frontend)
           - path: /taco(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
