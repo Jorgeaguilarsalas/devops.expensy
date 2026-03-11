@@ -9,11 +9,9 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-    - hosts:
-        - "*" 
-      secretName: expensy-tls-secret
+    - secretName: expensy-tls-secret 
   rules:
-    - http: 
+    - http:
         paths:
           - path: /taco(/|$)(api.*)
             pathType: ImplementationSpecific
